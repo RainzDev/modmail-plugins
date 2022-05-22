@@ -13,7 +13,7 @@ temp = {}
 
 class Slash_Menu(discord.ui.Select):
     def __init__(self):
-        options = [label="A", emoji=temp["emoji"]]
+        options = [label="A", description="This is an option to show the emoji", emoji=temp["emoji"]]
         super().__init__(placeholder="Select an option", options=options)
 
 class Menu(commands.Cog):

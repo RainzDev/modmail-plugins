@@ -96,6 +96,7 @@ class Menu(commands.Cog):
                     try:
                         temp["emoji"] = m.content
                         await ctx.send("Emoji example is here", view=Slash_Menu())
+                        del temp["emoji"] # This removes the key from the dict so it doesn't cause any errors in the future
                     except discord.HTTPException:
                         await ctx.send('Invalid emoji. Send another.')
                     else:

@@ -9,6 +9,12 @@ from core import checks
 from core.models import DummyMessage, PermissionLevel
 from core.utils import normalize_alias
 
+temp = {}
+
+class Slash_Menu(discord.ui.Select):
+    def __init__(self):
+        options = [label="A", emoji=temp["emoji"]]
+        super().__init__(placeholder="Select an option", options=options)
 
 class Menu(commands.Cog):
     """Reaction-based menu for threads"""
@@ -88,7 +94,8 @@ class Menu(commands.Cog):
                 while True:
                     m = await self.bot.wait_for('message', check=lambda x: ctx.message.channel == x.channel and ctx.message.author == x.author, timeout=300)
                     try:
-                        await m.add_reaction(m.content)
+                        temp["emoji"] = m.content
+                        await ctx.send("Emoji example is here", view=Slash_Menu())
                     except discord.HTTPException:
                         await ctx.send('Invalid emoji. Send another.')
                     else:

@@ -11,13 +11,21 @@ from core.utils import normalize_alias
 
 temp = {}
 
+class Select_Thread(discord.ui.Select): # WIP
+    def __init__(self):
+        self.db = self.bot.plugin_db.get_partition(self)
+        
+        for x in range(len(await self.db.find_one({'_id': 'config'})["options"])):
+            options = []
+        super().__init__(placeholder="Select an option", options=options)
+
 class Slash_Menu(discord.ui.Select):
     def __init__(self):
         options = [label="A", description="This is an option to show the emoji", emoji=temp["emoji"]]
         super().__init__(placeholder="Select an option", options=options)
 
 class Menu(commands.Cog):
-    """Reaction-based menu for threads"""
+    """Selection-based menu for threads"""
     def __init__(self, bot):
         self.bot = bot
         self.db = self.bot.plugin_db.get_partition(self)

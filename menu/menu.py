@@ -8,16 +8,25 @@ from discord.ext.commands.view import StringView
 from core import checks
 from core.models import DummyMessage, PermissionLevel
 from core.utils import normalize_alias
+from core.clients import PluginDatabaseClient
 
 temp = {}
 
 class Select_Thread(discord.ui.Select): # WIP
     def __init__(self):
-        self.db = self.bot.plugin_db.get_partition(self)
+        self.db = PluginDatabaseClient.get_partition(self)
         
         for x in range(len(await self.db.find_one({'_id': 'config'})["options"])):
+            adding_opt = []
             options = []
         super().__init__(placeholder="Select an option", options=options)
+        
+class SelectView(discord.ui.View):
+    def __init__(self, *, timeout=300):
+        super().__init__(timeout=timeout)
+        self.db = PluginDatabaseClient.get_partition(self)
+        for x in range(len(await self.db.find_one({'_id': 'config'})["options"])):
+            self.add_item(Select_Thread(), label="", )
 
 class Slash_Menu(discord.ui.Select):
     def __init__(self):
